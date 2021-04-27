@@ -100,11 +100,21 @@
     --card-width: 16.180339887498948482045868343656381177203091798057628621354486227rem;
     --card-height: 10rem;
     --card-radius: 5px;
+
+    --theme-color: #00aff1;
+    --error-color: #ff0032;
+  }
+
+  :global(input[type="text"]),
+  :global(select) {
+    border-radius: 5px;
+    border-color: #ccc;
   }
 
   main {
     display: grid;
     grid-template-columns: 1fr auto;
+    padding: 1rem;
   }
 
   .main-container {

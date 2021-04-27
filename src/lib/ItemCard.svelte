@@ -36,10 +36,14 @@
 
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 0.5rem;
     text-align: center;
   }
 
+  :global(.card > *) {
+    height: 2rem;
+  }
   button {
     position: absolute;
     top: 1rem;
