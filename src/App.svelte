@@ -63,8 +63,8 @@
 
 <main>
   <div class="card-container">
-    {#each items as { name, value, amount } }
-      <ItemCard bind:name={name} bind:value={value} bind:amount={amount} />
+    {#each items as { name, value, amount }, index }
+      <ItemCard bind:name={name} bind:value={value} bind:amount={amount} on:delete={() => { if (confirm(`本当に「${name}」を削除しますか？`)) { items.splice(index, 1); items = items } }} />
     {/each}
     <NewCard on:click={() => { console.log('clicked'); items.push({ name: `商品${numberToLetter(items.length)}`, value: 0, amount: 0}); items=items }} />
   </div>

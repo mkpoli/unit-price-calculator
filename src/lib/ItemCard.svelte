@@ -1,16 +1,23 @@
 <script lang="ts">
   import SvgIcon from '@jamescoyle/svelte-icon'
-  import { mdiPencilOutline } from '@mdi/js'
+  import {
+    mdiPencilOutline,
+    mdiDeleteOutline
+   } from '@mdi/js'
 
   export let name: string
   export let value: number
   export let amount: number
+
+  import { createEventDispatcher } from 'svelte';
+  const dispatch = createEventDispatcher()
 </script>
 
 <div class="card">
   <h3>{ name }<SvgIcon type="mdi" path={mdiPencilOutline} /></h3>
   <input type="text" bind:value={value} />
   <input type="text" bind:value={amount} />
+  <button on:click={() => {dispatch('delete')}}><SvgIcon type="mdi" path={mdiDeleteOutline}/></button>
 </div>
 
 <style>
