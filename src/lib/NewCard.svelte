@@ -18,7 +18,8 @@
     border-radius: var(--card-radius);
     /* box-shadow: 1px 1px 3px 1px #ccc; */
 
-    border-color: #ccc;
+    color: #aaa;
+    border-color: #aaa;
     border-style: dashed;
 
     padding: 1rem;
@@ -26,5 +27,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .card:hover {
+    color: #000;
   }
 </style>
