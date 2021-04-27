@@ -17,8 +17,8 @@
 
 <div class="card">
   <h3>{ name }<SvgIcon type="mdi" path={mdiPencilOutline} /></h3>
-  <UnitInput bind:value={value} unit={unit} />
-  <UnitInput bind:value={amount} unit="円" />
+  <UnitInput bind:value={amount} unit={unit} />
+  <UnitInput bind:value={value} unit="円" />
   <button on:click={() => {dispatch('delete')}}><SvgIcon type="mdi" path={mdiDeleteOutline}/></button>
 </div>
 

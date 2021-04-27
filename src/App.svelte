@@ -21,7 +21,7 @@
 
   const formatUnitPrice = (value: number, amount: number) => {
     const unitPrice = value / amount
-    return !isNaN(value / amount) && isFinite(value / amount) ? `${unitPrice}${unit}/円` : ' '
+    return !isNaN(value / amount) && isFinite(value / amount) ? `${unitPrice}円/${unit}` : ' '
   }
 
   const numberToLetter = (number: number) => {
