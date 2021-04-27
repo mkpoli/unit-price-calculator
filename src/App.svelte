@@ -1,6 +1,7 @@
 <script lang="ts">
   import ItemCard from './lib/ItemCard.svelte'
   import NewCard from './lib/NewCard.svelte'
+  import Ranking from './lib/Ranking.svelte';
 
   let items = [
     {
@@ -18,11 +19,6 @@
   let unit = 'g';
 
   $: ranking = [...items].sort((item) => item.value / item.amount)
-
-  const formatUnitPrice = (value: number, amount: number) => {
-    const unitPrice = value / amount
-    return !isNaN(value / amount) && isFinite(value / amount) ? `${unitPrice}円/${unit}` : ' '
-  }
 
   const numberToLetter = (number: number) => {
     // https://stackoverflow.com/a/67182787/2719898
@@ -87,11 +83,7 @@
   </div>
 
   <output>
-    <ul>
-      {#each ranking as { name, value, amount }}
-        <li>{name} {formatUnitPrice(value, amount)}</li>
-      {/each}
-    </ul>
+    <Ranking ranking={ranking} unit={unit} />
   </output>
 </main>
 
@@ -132,6 +124,7 @@
   }
 
   output {
-    width: var(--card-width);
+    padding: 2rem;
+    width: 25rem;
   }
 </style>
