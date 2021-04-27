@@ -8,15 +8,17 @@
   export let name: string
   export let value: number
   export let amount: number
+  export let unit: string
 
   import { createEventDispatcher } from 'svelte';
+  import UnitInput from './UnitInput.svelte';
   const dispatch = createEventDispatcher()
 </script>
 
 <div class="card">
   <h3>{ name }<SvgIcon type="mdi" path={mdiPencilOutline} /></h3>
-  <input type="text" bind:value={value} />
-  <input type="text" bind:value={amount} />
+  <UnitInput bind:value={value} unit={unit} />
+  <UnitInput bind:value={amount} unit="円" />
   <button on:click={() => {dispatch('delete')}}><SvgIcon type="mdi" path={mdiDeleteOutline}/></button>
 </div>
 

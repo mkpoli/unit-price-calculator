@@ -15,11 +15,13 @@
     }
   ]
 
+  let unit = 'g';
+
   $: ranking = [...items].sort((item) => item.value / item.amount)
 
   const formatUnitPrice = (value: number, amount: number) => {
     const unitPrice = value / amount
-    return !isNaN(value / amount) || isFinite(value / amount) ? unitPrice : ' '
+    return !isNaN(value / amount) || isFinite(value / amount) ? `${unitPrice}${unit}/円` : ' '
   }
 
   const numberToLetter = (number: number) => {
@@ -62,11 +64,26 @@
 </script>
 
 <main>
-  <div class="card-container">
-    {#each items as { name, value, amount }, index }
-      <ItemCard bind:name={name} bind:value={value} bind:amount={amount} on:delete={() => { if (confirm(`本当に「${name}」を削除しますか？`)) { items.splice(index, 1); items = items } }} />
-    {/each}
-    <NewCard on:click={() => { console.log('clicked'); items.push({ name: `商品${numberToLetter(items.length)}`, value: 0, amount: 0}); items=items }} />
+  <div class="main-container">
+    <label>
+      単位
+      <select bind:value={unit}>
+        <option value="g">g（グラム）</option>
+        <option value="個">個（人前・杯・皿・枚・本・袋・箱）</option>
+      </select>
+    </label>
+    <div class="card-container">
+      {#each items as { name, value, amount }, index }
+        <ItemCard
+          bind:name={name}
+          bind:value={value}
+          bind:amount={amount}
+          on:delete={() => { if (confirm(`本当に「${name}」を削除しますか？`)) { items.splice(index, 1); items = items } }}
+          unit={unit}
+        />
+      {/each}
+      <NewCard on:click={() => { console.log('clicked'); items.push({ name: `商品${numberToLetter(items.length)}`, value: 0, amount: 0}); items=items }} />
+    </div>
   </div>
 
   <output>
@@ -85,8 +102,26 @@
     --card-radius: 5px;
   }
 
+  main {
+    display: grid;
+    grid-template-columns: 1fr auto;
+  }
+
+  .main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+
   .card-container {
     display: flex;
-    gap: 10px
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  output {
+    width: var(--card-width);
   }
 </style>
