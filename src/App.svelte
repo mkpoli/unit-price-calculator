@@ -1,8 +1,92 @@
 <script lang="ts">
+  import ItemCard from './lib/ItemCard.svelte'
+  import NewCard from './lib/NewCard.svelte'
+
+  let items = [
+    {
+      name: '商品A',
+      value: 0,
+      amount: 0
+    },
+    {
+      name: '商品B',
+      value: 0,
+      amount: 0
+    }
+  ]
+
+  $: ranking = [...items].sort((item) => item.value / item.amount)
+
+  const formatUnitPrice = (value: number, amount: number) => {
+    const unitPrice = value / amount
+    return !isNaN(value / amount) || isFinite(value / amount) ? unitPrice : ' '
+  }
+
+  const numberToLetter = (number: number) => {
+    // https://stackoverflow.com/a/67182787/2719898
+
+    number = number + 1
+    //Takes any number and converts it into a base (dictionary length) letter combo. 0 corresponds to an empty string.
+    //It converts any numerical entry into a positive integer.
+    if (isNaN(number)) {return undefined}
+    number = Math.abs(Math.floor(number))
+
+    const dictionary = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    let index = number % dictionary.length
+    let quotient = number / dictionary.length
+    let result
+    
+    if (number <= dictionary.length) {return numToLetter(number)}  //Number is within single digit bounds of our encoding letter alphabet
+
+    if (quotient >= 1) {
+        //This number was bigger than our dictionary, recursively perform this function until we're done
+        if (index === 0) {quotient--}   //Accounts for the edge case of the last letter in the dictionary string
+        result = numberToLetter(quotient)
+    }
+
+    if (index === 0) {index = dictionary.length}   //Accounts for the edge case of the final letter; avoids getting an empty string
+    
+    return result + numToLetter(index)
+
+    function numToLetter(number) {
+        //Takes a letter between 0 and max letter length and returns the corresponding letter
+        if (number > dictionary.length || number < 0) {return undefined}
+        if (number === 0) {
+            return ''
+        } else {
+            return dictionary.slice(number - 1, number)
+        }
+    }
+  }
+
 </script>
 
 <main>
+  <div class="card-container">
+    {#each items as { name, value, amount } }
+      <ItemCard bind:name={name} bind:value={value} bind:amount={amount} />
+    {/each}
+    <NewCard on:click={() => { console.log('clicked'); items.push({ name: `商品${numberToLetter(items.length)}`, value: 0, amount: 0}); items=items }} />
+  </div>
+
+  <output>
+    <ul>
+      {#each ranking as { name, value, amount }}
+        <li>{name} {formatUnitPrice(value, amount)}</li>
+      {/each}
+    </ul>
+  </output>
 </main>
 
 <style>
+  :root {
+    --card-width: 16.180339887498948482045868343656381177203091798057628621354486227rem;
+    --card-height: 10rem;
+    --card-radius: 5px;
+  }
+
+  .card-container {
+    display: flex;
+    gap: 10px
+  }
 </style>
