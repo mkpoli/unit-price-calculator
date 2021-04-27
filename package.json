@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@jamescoyle/svelte-icon": "^0.1.1",
-    "@mdi/js": "^5.9.55"
+    "@mdi/js": "^5.9.55",
+    "sanitize.css": "^12.0.1"
   }
 }
