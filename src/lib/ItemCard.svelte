@@ -1,31 +1,29 @@
 <script lang="ts">
   import SvgIcon from '@jamescoyle/svelte-icon'
-  import {
-    mdiPencilOutline,
-    mdiDeleteOutline
-   } from '@mdi/js'
+  import { mdiDeleteOutline } from '@mdi/js'
 
   export let name: string
   export let value: number
   export let amount: number
   export let unit: string
 
-  import { createEventDispatcher } from 'svelte';
-  import UnitInput from './UnitInput.svelte';
+  import { createEventDispatcher } from 'svelte'
   const dispatch = createEventDispatcher()
+
+  import EditableTitle from './EditableTitle.svelte'
+  import UnitInput from './UnitInput.svelte'
 </script>
 
 <div class="card">
-  <h3>{ name }<SvgIcon type="mdi" path={mdiPencilOutline} /></h3>
+  <EditableTitle bind:value={name}>
+    <button on:click={() => {dispatch('delete')}}><SvgIcon type="mdi" path={mdiDeleteOutline}/></button>
+  </EditableTitle>
   <UnitInput bind:value={amount} unit={unit} />
   <UnitInput bind:value={value} unit="円" />
-  <button on:click={() => {dispatch('delete')}}><SvgIcon type="mdi" path={mdiDeleteOutline}/></button>
 </div>
 
 <style style lang="postcss">
   .card {
-    position: relative;
-
     width: var(--card-width);
     height: var(--card-height);
 
@@ -44,10 +42,11 @@
   :global(.card > *) {
     height: 2rem;
   }
+
   button {
-    position: absolute;
+    /* position: absolute;
     top: 1rem;
-    right: 1rem;
+    right: 1rem; */
 
     padding: 0;
 
@@ -62,7 +61,7 @@
 
     &:focus {
       outline: none;
-      color: #ff0032;
+      color: var(--error-color);
     }
   }
 </style>
