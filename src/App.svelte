@@ -130,7 +130,7 @@
 
   .card-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: var(--card-width) var(--card-width);
     gap: 1rem;
     flex-wrap: wrap;
     margin: 0 auto;
@@ -138,8 +138,6 @@
     @media only screen and (max-width: 720px) {
       grid-template-columns: 1fr;
     }
-    /* align-items: center; */
-    /* justify-content: center; */
   }
 
   output {
