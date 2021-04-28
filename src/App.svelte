@@ -142,7 +142,7 @@
   }
 
   output {
-    max-width: 20rem;
+    max-width: 22rem;
     width: 100%;
     height: 100%;
   }

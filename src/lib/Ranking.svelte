@@ -99,7 +99,7 @@
 
     display: grid;
     gap: 0.5rem;
-    grid-template-columns: 2rem 1fr 1fr;
+    grid-template-columns: 2rem 0.75fr 1.25fr;
 
     list-style: none;
   }
