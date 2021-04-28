@@ -107,8 +107,16 @@
 
   :global(input[type="text"]),
   :global(select) {
-    border-radius: 5px;
+    border-radius: 5px !important;
     border-color: #ccc;
+    /* appearance: none; */
+  }
+
+  :global(input[type="text"]):focus,
+  :global(select):focus {
+    outline: none;
+    border-color: var(--theme-color);
+    box-shadow: 0 0 1px 0px var(--theme-color);
   }
 
   main {
