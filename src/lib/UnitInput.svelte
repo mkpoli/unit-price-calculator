@@ -10,7 +10,7 @@
       const result = mexp.eval(realValue)
       value = result 
     } catch {
-      return
+      value = NaN
     }
   }
 
