@@ -25,7 +25,7 @@
 <style style lang="postcss">
   .card {
     width: var(--card-width);
-    height: var(--card-height);
+    min-height: var(--card-height);
 
     border-radius: 5px;
     box-shadow: 1px 1px 3px 1px #ccc;
@@ -33,7 +33,7 @@
     padding: 1rem;
 
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: auto 2rem 2rem;
     place-items: center;
     justify-content: center;
     gap: 0.5rem;
@@ -41,7 +41,7 @@
   }
 
   :global(.card > *) {
-    height: 2rem;
+    min-height: 2rem;
     width: 100%;
   }
 
