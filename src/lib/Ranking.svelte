@@ -2,7 +2,11 @@
   import SvgIcon from "@jamescoyle/svelte-icon"
   import { mdiThumbDownOutline, mdiCrownOutline } from '@mdi/js'
 
-  interface Item { name: string, value: number, amount: number }
+  interface Item {
+    name: string,
+    value: number,
+    amount: number
+  }
 
   export let items: Item[]
   export let unit: string
@@ -12,73 +16,84 @@
     return !isNaN(value / amount) && isFinite(value / amount) ? `${parseFloat(unitPrice.toFixed(8))}円/${unit}` : ' '
   }
 
-  const calculatePrice = (value: number, amount: number, fallback: number=0) => {
+  const calculatePrice = (value: number, amount: number) => {
     const unitPrice = value / amount
-    return !isNaN(value / amount) && isFinite(value / amount) ? unitPrice : fallback
+    return !isNaN(value / amount) && isFinite(value / amount) ? unitPrice : NaN
+  }
+
+  class PriceMap extends Map<number, number[]> {
+    get(k: number): number[] {
+      if (this.has(k)) {
+        return super.get(k)
+      } else {
+        const v = []
+        this.set(k, v)
+        return v
+      }
+    }
+  }
+
+  function createPriceMap(prices: number[]): PriceMap {
+    return prices.reduce((map: PriceMap, price: number, index: number) => {
+      map.get(price).push(index)
+      return map
+    }, new PriceMap())
   }
 
   interface MinMax {
     min?: {
-      index: number,
       value: number,
+      indices: number[],
     },
     max?: {
-      index: number,
       value: number,
+      indices: number[],
     }
   }
 
-  function getMinMax(items: Item[]) {
-    return items.reduce((acc: MinMax, ele: Item, ind: number) => {
-      const price = calculatePrice(ele.value, ele.amount, NaN)
+  function createMinMax(priceMap: PriceMap): MinMax {
+    const sorted = [...priceMap.entries()].filter(([value,]) => !isNaN(value)).sort(([valA,], [valB,]) => {
+      return valA - valB
+    })
 
-      if (isNaN(price)) {
-        return acc
-      }
-      
-      if (price > acc.max.value) {
-        acc.max = {
-          index: ind,
-          value: price
-        }
-      }
+    if (sorted.length <= 1) {
+      return {}
+    }
 
-      if (price < acc.min.value) {
-        acc.min = {
-          index: ind,
-          value: price
-        }
-      }
+    const [valueMin, indexMin] = sorted[0]
+    const [valueMax, indexMax] = sorted[sorted.length - 1]
 
-      return acc
-    }, {
+    return {
       min: {
-        index: -1,
-        value: Infinity
+        value: valueMin,
+        indices: indexMin,
       },
       max: {
-        index: -1,
-        value: -Infinity
+        value: valueMax,
+        indices: indexMax,
       }
-    })
+    }
   }
 
-  $: minmax = getMinMax(items)
-
+  $: prices = items.map(({ value, amount }) => calculatePrice(value, amount))
+  $: priceMap = createPriceMap(prices)
+  $: minmax = createMinMax(priceMap)
 </script>
 
 <ul>
   {#each items as { name, value, amount }, index}
     <li>
       <div class="result-icon">
-        {#if index == minmax.min.index}
+        {#if minmax.min?.indices?.includes(index)}
           <span class="best-icon"><SvgIcon type="mdi" path={mdiCrownOutline}/></span>
-        {:else if index == minmax.max.index && items.length > 2}
+        {:else if priceMap.size > 2 && minmax.max?.indices?.includes(index)}
           <span class="worst-icon"><SvgIcon type="mdi" path={mdiThumbDownOutline} size="20"/></span>
         {/if}
       </div>
       <span>{name}</span><span>{formatUnitPrice(value, amount, unit)}</span>
-      <div class="bar"><div class="bar-content" style="width: {minmax.max.value == -Infinity ? 0 : calculatePrice(value, amount) / minmax.max.value * 100}%;"></div></div>
+      <div class="bar">
+        <div class="bar-content" style="width: {minmax.max && !isNaN(prices[index]) ? prices[index] / minmax.max.value * 100 : 0}%;"></div>
+      </div>
     </li>
   {/each}
 </ul>
