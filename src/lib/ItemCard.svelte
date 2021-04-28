@@ -16,7 +16,7 @@
 
 <div class="card">
   <EditableTitle bind:value={name}>
-    <button on:click={() => {dispatch('delete')}}><SvgIcon type="mdi" path={mdiDeleteOutline}/></button>
+    <button type="button" on:click={() => {dispatch('delete')}}><SvgIcon type="mdi" path={mdiDeleteOutline}/></button>
   </EditableTitle>
   <UnitInput bind:value={amount} unit={unit} />
   <UnitInput bind:value={value} unit="円" />
