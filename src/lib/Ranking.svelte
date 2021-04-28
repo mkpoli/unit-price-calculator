@@ -19,7 +19,7 @@
 <ul>
   {#each ranking as { name, value, amount }}
     <li>
-      {name} {formatUnitPrice(value, amount)}
+      <span>{name}</span><span>{formatUnitPrice(value, amount)}</span>
       <div class="bar"><div class="bar-content" style="width: {maxmium == 0 ? 0 : calculatePrice(value, amount) / maxmium * 100}%;"></div></div>
     </li>
   {/each}
@@ -36,9 +36,13 @@
   }
 
   li {
-    display: block;
-    padding: 0.4rem;
     position: relative;
+    padding: 0.4rem;
+
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: 1fr 1fr;
+
     list-style: none;
   }
 
