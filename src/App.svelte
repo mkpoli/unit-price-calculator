@@ -61,7 +61,6 @@
 </script>
 
 <main>
-  <div class="main-container">
     <label>
       単位
       <select bind:value={unit}>
@@ -81,7 +80,8 @@
       {/each}
       <NewCard on:click={() => { console.log('clicked'); items.push({ name: `商品${numberToLetter(items.length)}`, value: 0, amount: 0}); items=items }} />
     </div>
-  </div>
+
+  <h2>結果</h2>
 
   <output>
     <Ranking ranking={ranking} unit={unit} />
@@ -106,27 +106,29 @@
   }
 
   main {
-    display: grid;
-    grid-template-columns: 1fr auto;
     padding: 1rem;
-  }
+    max-width: 1024px;
+    margin: 0 auto;
 
-  .main-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
+    display: grid;
+    grid-template: 1fr auto / 1fr 1fr;
+    grid-auto-flow: column;
+    gap: 0 1rem;
+    place-items: center;
   }
 
   .card-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 1rem;
     flex-wrap: wrap;
+    margin: 0 auto;
+    /* align-items: center; */
+    /* justify-content: center; */
   }
 
   output {
-    padding: 2rem;
-    width: 25rem;
+    width: 20rem;
+    height: 100%;
   }
 </style>
