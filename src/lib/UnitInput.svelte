@@ -24,5 +24,6 @@
   label {
     display: grid;
     grid-template-columns: 1fr 2rem;
+    align-items: center;
   }
 </style>
