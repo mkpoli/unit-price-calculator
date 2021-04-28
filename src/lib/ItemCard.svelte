@@ -32,8 +32,9 @@
 
     padding: 1rem;
 
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    place-items: center;
     justify-content: center;
     gap: 0.5rem;
     text-align: center;
@@ -41,6 +42,7 @@
 
   :global(.card > *) {
     height: 2rem;
+    width: 100%;
   }
 
   button {
