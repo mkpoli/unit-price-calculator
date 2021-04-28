@@ -6,7 +6,7 @@
   import { mdiPlus } from '@mdi/js'
 </script>
 
-<div class="card" on:click={() => { dispatch('click') }}>
+<div class="card" on:click={() => { dispatch('click') }} tabindex="0">
   <SvgIcon type="mdi" path={mdiPlus} />
 </div>
 
@@ -31,5 +31,10 @@
 
   .card:hover {
     color: #000;
+  }
+
+  .card:focus {
+    outline: none;
+    color: var(--theme-color);
   }
 </style>
