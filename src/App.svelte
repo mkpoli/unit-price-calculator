@@ -2,6 +2,7 @@
   import ItemCard from './lib/ItemCard.svelte'
   import NewCard from './lib/NewCard.svelte'
   import Ranking from './lib/Ranking.svelte';
+  import TipBox from './lib/TipBox.svelte';
 
   let items = [
     {
@@ -86,6 +87,7 @@
     <Ranking ranking={ranking} unit={unit} />
   </output>
 </main>
+<TipBox></TipBox>
 
 <style>
   :root {
