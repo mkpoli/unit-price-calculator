@@ -20,8 +20,6 @@
 
   let unit = 'g';
 
-  $: ranking = [...items].sort((item) => item.value / item.amount)
-
   let nameCount = 2;
 
   const numberToLetter = (number: number) => {
@@ -85,7 +83,7 @@
   <h2>結果</h2>
 
   <output>
-    <Ranking ranking={ranking} unit={unit} />
+    <Ranking items={items} unit={unit} />
   </output>
 </main>
 <TipBox></TipBox>
