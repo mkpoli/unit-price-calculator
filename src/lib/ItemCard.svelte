@@ -33,7 +33,7 @@
     padding: 1rem;
 
     display: grid;
-    grid-template-rows: auto 2rem 2rem;
+    grid-template-rows: clamp(2rem, 2rem, auto) 2rem 2rem;
     place-items: center;
     justify-content: center;
     gap: 0.5rem;
