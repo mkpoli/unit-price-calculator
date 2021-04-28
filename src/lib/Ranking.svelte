@@ -7,7 +7,7 @@
   export let items: Item[]
   export let unit: string
 
-  const formatUnitPrice = (value: number, amount: number) => {
+  const formatUnitPrice = (value: number, amount: number, unit: string) => {
     const unitPrice = value / amount
     return !isNaN(value / amount) && isFinite(value / amount) ? `${parseFloat(unitPrice.toFixed(8))}円/${unit}` : ' '
   }
@@ -77,7 +77,7 @@
           <span class="worst-icon"><SvgIcon type="mdi" path={mdiThumbDownOutline} size="20"/></span>
         {/if}
       </div>
-      <span>{name}</span><span>{formatUnitPrice(value, amount)}</span>
+      <span>{name}</span><span>{formatUnitPrice(value, amount, unit)}</span>
       <div class="bar"><div class="bar-content" style="width: {minmax.max.value == -Infinity ? 0 : calculatePrice(value, amount) / minmax.max.value * 100}%;"></div></div>
     </li>
   {/each}
