@@ -3,7 +3,7 @@
 </script>
 
 <label>
-  単位
+  <span>単位</span>
   <select bind:value={value}>
     <option value="g">g（グラム）</option>
     <option value="mL">mL（ミリリットル）・cc・cm³</option>
@@ -12,6 +12,10 @@
 </label>
 
 <style>
+  span {
+    margin-right: 0.3rem;
+  }
+
   @media only screen and (max-width: 720px) {
     label {
       width: var(--card-width);
