@@ -1,10 +1,11 @@
 <script lang="ts">
   import SvgIcon from '@jamescoyle/svelte-icon'
   import { mdiInformationOutline } from '@mdi/js'
-
+  
+  let hidden: boolean
 </script>
 
-<div class="tip"><SvgIcon type="mdi" path={mdiInformationOutline}></SvgIcon>「1*2+(3/4)^2」みたいな数式も使えますよ。</div>
+<div class="tip" on:click|once={() => {hidden = true}} class:hidden={hidden}><SvgIcon type="mdi" path={mdiInformationOutline}></SvgIcon>「1*2+(3/4)^2」みたいな数式も使えますよ。</div>
 
 <style style lang="postcss">
   .tip {
@@ -36,5 +37,9 @@
       border-right: none;
       border-bottom: none;
     }
+  }
+
+  .tip.hidden {
+    display: none;
   }
 </style>
