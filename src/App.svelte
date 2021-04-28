@@ -115,6 +115,11 @@
     grid-auto-flow: column;
     gap: 0 1rem;
     place-items: center;
+
+    @media only screen and (max-width: 720px) {
+      grid-template: auto 1fr auto 1fr / 1fr;
+      gap: 1rem;
+    }    
   }
 
   .card-container {
@@ -123,12 +128,17 @@
     gap: 1rem;
     flex-wrap: wrap;
     margin: 0 auto;
+
+    @media only screen and (max-width: 720px) {
+      grid-template-columns: 1fr;
+    }
     /* align-items: center; */
     /* justify-content: center; */
   }
 
   output {
-    width: 20rem;
+    max-width: 20rem;
+    width: 100%;
     height: 100%;
   }
 </style>

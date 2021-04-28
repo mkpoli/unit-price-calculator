@@ -25,5 +25,16 @@
     background: #e6f8ff;
     border: 1px solid var(--theme-color);
     border-radius: 5px;
+
+    @media only screen and (max-width: 720px) {
+      left: 0;
+      right: 0;
+      bottom: 0;
+      max-width: none;
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+      border-bottom: none;
+    }
   }
 </style>
