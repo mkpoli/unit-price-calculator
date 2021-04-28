@@ -6,7 +6,8 @@
   単位
   <select bind:value={value}>
     <option value="g">g（グラム）</option>
-    <option value="個">個（人前・杯・皿・枚・本・袋・箱）</option>
+    <option value="mL">mL（ミリリットル）・cc・cm³</option>
+    <option value="個">個（・人前・杯・皿・枚・本・袋・箱）</option>
   </select>
 </label>
 
