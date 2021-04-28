@@ -3,6 +3,7 @@
   import NewCard from './lib/NewCard.svelte'
   import Ranking from './lib/Ranking.svelte';
   import TipBox from './lib/TipBox.svelte';
+  import UnitSelector from './lib/UnitSelector.svelte';
 
   let items = [
     {
@@ -63,29 +64,23 @@
 </script>
 
 <main>
-    <label>
-      単位
-      <select bind:value={unit}>
-        <option value="g">g（グラム）</option>
-        <option value="個">個（人前・杯・皿・枚・本・袋・箱）</option>
-      </select>
-    </label>
-    <div class="card-container">
-      {#each items as { name, value, amount }, index }
-        <ItemCard
-          bind:name={name}
-          bind:value={value}
-          bind:amount={amount}
-          on:delete={() => { if (confirm(`本当に「${name}」を削除しますか？`)) { items.splice(index, 1); items = items } }}
-          unit={unit}
-        />
-      {/each}
-      <NewCard on:click={() => {
-        items.push({ name: `商品${numberToLetter(nameCount)}`, value: 0, amount: 0})
-        nameCount += 1
-        items = items
-      }} />
-    </div>
+  <UnitSelector bind:value={unit}/>
+  <div class="card-container">
+    {#each items as { name, value, amount }, index }
+      <ItemCard
+        bind:name={name}
+        bind:value={value}
+        bind:amount={amount}
+        on:delete={() => { if (confirm(`本当に「${name}」を削除しますか？`)) { items.splice(index, 1); items = items } }}
+        unit={unit}
+      />
+    {/each}
+    <NewCard on:click={() => {
+      items.push({ name: `商品${numberToLetter(nameCount)}`, value: 0, amount: 0})
+      nameCount += 1
+      items = items
+    }}/>
+  </div>
 
   <h2>結果</h2>
 
@@ -133,7 +128,7 @@
     @media only screen and (max-width: 720px) {
       grid-template: auto 1fr auto 1fr / 1fr;
       gap: 1rem;
-    }    
+    }
   }
 
   .card-container {
