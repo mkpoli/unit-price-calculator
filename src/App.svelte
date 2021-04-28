@@ -21,6 +21,8 @@
 
   $: ranking = [...items].sort((item) => item.value / item.amount)
 
+  let nameCount = 2;
+
   const numberToLetter = (number: number) => {
     // https://stackoverflow.com/a/67182787/2719898
 
@@ -78,7 +80,11 @@
           unit={unit}
         />
       {/each}
-      <NewCard on:click={() => { console.log('clicked'); items.push({ name: `商品${numberToLetter(items.length)}`, value: 0, amount: 0}); items=items }} />
+      <NewCard on:click={() => {
+        items.push({ name: `商品${numberToLetter(nameCount)}`, value: 0, amount: 0})
+        nameCount += 1
+        items = items
+      }} />
     </div>
 
   <h2>結果</h2>
