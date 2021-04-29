@@ -34,65 +34,44 @@
   }
 
   function createPriceMap(prices: number[]): PriceMap {
-    return prices.reduce((map: PriceMap, price: number, index: number) => {
+    const priceMap = prices.reduce((map: PriceMap, price: number, index: number) => {
       map.get(price).push(index)
       return map
     }, new PriceMap())
-  }
-
-  interface MinMax {
-    min?: {
-      value: number,
-      indices: number[],
-    },
-    max?: {
-      value: number,
-      indices: number[],
-    }
-  }
-
-  function createMinMax(priceMap: PriceMap): MinMax {
-    const sorted = [...priceMap.entries()].filter(([value,]) => !isNaN(value)).sort(([valA,], [valB,]) => {
-      return valA - valB
-    })
-
-    if (sorted.length <= 1) {
-      return {}
-    }
-
-    const [valueMin, indexMin] = sorted[0]
-    const [valueMax, indexMax] = sorted[sorted.length - 1]
-
-    return {
-      min: {
-        value: valueMin,
-        indices: indexMin,
-      },
-      max: {
-        value: valueMax,
-        indices: indexMax,
-      }
-    }
+    return new PriceMap([...priceMap.entries()].filter(([value,]) => !isNaN(value)).sort(([valA,], [valB,]) => valA - valB))
   }
 
   $: prices = items.map(({ value, amount }) => calculatePrice(value, amount))
   $: priceMap = createPriceMap(prices)
-  $: minmax = createMinMax(priceMap)
+
+  $: rankingMap = [...priceMap.entries()].reduce((acc, [value, indices], ranking) => {
+    for (const index of indices) {
+      acc[index] = ranking + 1
+    }
+    return acc
+  }, {})
 </script>
 
 <ul>
   {#each items as { name, value, amount }, index}
     <li>
       <div class="result-icon">
-        {#if minmax.min?.indices?.includes(index)}
-          <span class="best-icon"><SvgIcon type="mdi" path={mdiCrownOutline}/></span>
-        {:else if priceMap.size > 2 && minmax.max?.indices?.includes(index)}
-          <span class="worst-icon"><SvgIcon type="mdi" path={mdiThumbDownOutline} size="20"/></span>
+        {#if index in rankingMap}
+          {#if rankingMap[index] == 1}
+            <span class="best-icon"><SvgIcon type="mdi" path={mdiCrownOutline}/></span>
+          {:else if priceMap.size > 2 && rankingMap[index] == priceMap.size}
+            <span class="worst-icon"><SvgIcon type="mdi" path={mdiThumbDownOutline} size="20"/></span>
+          {/if}
         {/if}
       </div>
       <span>{name}</span><span>{formatUnitPrice(value, amount, unit)}</span>
+      <div>
+        {#if index in rankingMap}
+          <span class="ranking-number">{rankingMap[index]}</span>
+        {/if}
+      </div>
       <div class="bar">
-        <div class="bar-content" style="width: {minmax.max && !isNaN(prices[index]) ? prices[index] / minmax.max.value * 100 : 0}%;"></div>
+        <div class="bar-content" style="width: {priceMap.size >= 1 && index in rankingMap ? prices[index] / [...priceMap.entries()].pop()[0] * 100 : 0}%;"></div>
       </div>
     </li>
   {/each}
@@ -114,7 +93,7 @@
 
     display: grid;
     gap: 0.5rem;
-    grid-template-columns: 2rem 0.75fr 1.25fr;
+    grid-template-columns: 2rem 0.75fr 1.25fr 2rem;
 
     list-style: none;
   }
@@ -122,6 +101,9 @@
   .result-icon {
     margin: auto 0;
     left: -2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .best-icon {
@@ -133,11 +115,19 @@
     color: #ccc;
   }
 
+  .ranking-number {
+    color: var(--theme-color);
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    display: inline-block;
+  }
+
   .bar {
     position: absolute;
     top: 0;
     left: 2.5rem;
-    right: 0;
+    right: 2.5rem;
     bottom: 0;
     background-color: #f8f8f8;
     z-index: -1;
