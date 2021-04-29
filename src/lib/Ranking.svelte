@@ -11,15 +11,12 @@
   export let items: Item[]
   export let unit: string
 
-  const formatUnitPrice = (value: number, amount: number, unit: string) => {
-    const unitPrice = value / amount
-    return !isNaN(value / amount) && isFinite(value / amount) ? `${parseFloat(unitPrice.toFixed(8))}円/${unit}` : ' '
-  }
-
   const calculatePrice = (value: number, amount: number) => {
     const unitPrice = value / amount
     return !isNaN(value / amount) && isFinite(value / amount) ? unitPrice : NaN
   }
+
+  const formatUnitPrice = (price: number, unit: string) => !isNaN(price) ? `${parseFloat(price.toFixed(8))}円/${unit}` : ' '
 
   class PriceMap extends Map<number, number[]> {
     get(k: number): number[] {
@@ -44,7 +41,7 @@
   $: prices = items.map(({ value, amount }) => calculatePrice(value, amount))
   $: priceMap = createPriceMap(prices)
 
-  $: rankingMap = [...priceMap.entries()].reduce((acc, [value, indices], ranking) => {
+  $: rankingMap = [...priceMap.entries()].reduce((acc, [, indices], ranking) => {
     for (const index of indices) {
       acc[index] = ranking + 1
     }
@@ -53,7 +50,7 @@
 </script>
 
 <ul>
-  {#each items as { name, value, amount }, index}
+  {#each items as { name }, index}
     <li>
       <div class="result-icon">
         {#if index in rankingMap}
@@ -64,7 +61,7 @@
           {/if}
         {/if}
       </div>
-      <span>{name}</span><span>{formatUnitPrice(value, amount, unit)}</span>
+      <span>{name}</span><span>{formatUnitPrice(prices[index], unit)}</span>
       <div>
         {#if index in rankingMap}
           <span class="ranking-number">{rankingMap[index]}</span>
