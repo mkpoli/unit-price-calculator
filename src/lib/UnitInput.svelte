@@ -7,7 +7,7 @@
 
   function onInput() {
     try {
-      const result = mexp.eval(realValue)
+      const result = mexp.eval(realValue.replace(/,/g, ''))
       value = result 
     } catch {
       value = NaN
